@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "unique-profile"
+version = "0.1.0"
+description = "A portable, self-hostable personal AI profile MCP server"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = [
+    "mcp>=1.0.0",
+]
+
+[project.scripts]
+unique-profile = "unique_profile.server:main"
