@@ -13,10 +13,7 @@ from unique_profile.profile import ProfileStore
 _profile_dir = os.environ.get("UNIQUE_PROFILE_DIR")
 store = ProfileStore(profile_dir=_profile_dir)
 
-mcp = FastMCP(
-    "Unique Profile",
-    description="A portable, self-hostable personal AI profile",
-)
+mcp = FastMCP("Unique Profile")
 
 # =============================================================================
 # Resources — injected into the LLM's context at conversation start
