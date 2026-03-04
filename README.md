@@ -6,6 +6,49 @@ A portable, self-hostable **personal AI profile** MCP server. Carry your identit
 
 Every AI provider has its own memory feature, but they're all siloed. Switch from Claude to ChatGPT? Start from scratch. Unique Profile solves this: **you own your profile, you bring it anywhere.**
 
+## Architecture
+
+```mermaid
+graph LR
+    subgraph Clients["MCP Clients"]
+        CC["Claude Code"]
+        CD["Claude Desktop"]
+        OAI["OpenAI (MCP)"]
+        VS["VS Code / Cursor"]
+        OTHER["Any MCP Client"]
+    end
+
+    subgraph Server["Unique Profile MCP Server"]
+        direction TB
+        R["Resources\nidentity · preferences\nknowledge · memories"]
+        T["Tools\nadd_memory · update_profile\nsearch · delete · export"]
+        P["Prompts\nintroduce_yourself\nsummarize_session"]
+    end
+
+    subgraph Storage["Local Storage"]
+        JSON[("~/.unique-profile/\nprofile.json")]
+    end
+
+    CC  -- "stdio\n(JSON-RPC)" --> Server
+    CD  -- "stdio\n(JSON-RPC)" --> Server
+    OAI -- "stdio\n(JSON-RPC)" --> Server
+    VS  -- "stdio\n(JSON-RPC)" --> Server
+    OTHER -- "stdio\n(JSON-RPC)" --> Server
+
+    R  -- read --> JSON
+    T  -- read/write --> JSON
+    P  -- read --> JSON
+
+    style Clients fill:#1a1a2e,stroke:#e94560,color:#fff
+    style Server fill:#16213e,stroke:#0f3460,color:#fff
+    style Storage fill:#0f3460,stroke:#53354a,color:#fff
+    style JSON fill:#533454,stroke:#e94560,color:#fff
+```
+
+**One profile. Any model. Your machine.**
+
+Each MCP client spawns the server as a subprocess and communicates over stdio. All clients read from and write to the same local JSON file — so a memory saved by Claude is available to GPT, and vice versa.
+
 ## Quick Start
 
 ### 1. Install
