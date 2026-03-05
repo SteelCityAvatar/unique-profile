@@ -20,20 +20,20 @@ graph LR
 
     subgraph Server["Unique Profile MCP Server"]
         direction TB
-        R["Resources\nidentity · preferences\nknowledge · memories"]
-        T["Tools\nadd_memory · update_profile\nsearch · delete · export"]
-        P["Prompts\nintroduce_yourself\nsummarize_session"]
+        R["Resources<br/>identity · preferences<br/>knowledge · memories"]
+        T["Tools<br/>add_memory · update_profile<br/>search · delete · export"]
+        P["Prompts<br/>introduce_yourself<br/>summarize_session"]
     end
 
     subgraph Storage["Local Storage"]
-        JSON[("~/.unique-profile/\nprofile.json")]
+        JSON[("~/.unique-profile/<br/>profile.json")]
     end
 
-    CC  -- "stdio\n(JSON-RPC)" --> Server
-    CD  -- "stdio\n(JSON-RPC)" --> Server
-    OAI -- "stdio\n(JSON-RPC)" --> Server
-    VS  -- "stdio\n(JSON-RPC)" --> Server
-    OTHER -- "stdio\n(JSON-RPC)" --> Server
+    CC  -- "stdio<br/>(JSON-RPC)" --> Server
+    CD  -- "stdio<br/>(JSON-RPC)" --> Server
+    OAI -- "stdio<br/>(JSON-RPC)" --> Server
+    VS  -- "stdio<br/>(JSON-RPC)" --> Server
+    OTHER -- "stdio<br/>(JSON-RPC)" --> Server
 
     R  -- read --> JSON
     T  -- read/write --> JSON
