@@ -135,6 +135,10 @@ If you omit `UNIQUE_PROFILE_DIR`, data is stored in `~/.unique-profile/`.
 
 - **Success criteria:** If these queries return meaningful data from your profile, the full pipeline is working: client → stdio/JSON-RPC → server → `profile.json` → response.
 
+**Example: first run with a populated profile**
+
+![MCP first run demo showing the introduce_yourself prompt in Claude Code](docs/mcp-first-run.png)
+
 ### 4. Use it
 
 Once connected, the LLM can:

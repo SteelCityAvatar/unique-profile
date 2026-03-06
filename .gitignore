@@ -8,3 +8,5 @@ build/
 *.egg
 .env
 profile_data/
+.vscode/
+docs/testjson.json
