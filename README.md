@@ -58,9 +58,11 @@ cd unique-profile
 pip install -e .
 ```
 
-### 2. Configure with Claude Code
+### 2. Configure your MCP client
 
-Add to your Claude Code MCP settings (`~/.claude/settings.json` or project `.mcp.json`):
+Open your Claude Code settings file (`~/.claude/settings.json`) and add the server under `mcpServers`. If the file doesn't exist or doesn't have an `mcpServers` key, create it.
+
+**Option A — Using the installed console script:**
 
 ```json
 {
@@ -75,9 +77,65 @@ Add to your Claude Code MCP settings (`~/.claude/settings.json` or project `.mcp
 }
 ```
 
+**Option B — Using the venv Python directly (useful if the console script isn't on your PATH):**
+
+```json
+{
+  "mcpServers": {
+    "unique-profile": {
+      "command": "/path/to/unique-profile/.venv/Scripts/python.exe",
+      "args": ["-m", "unique_profile.server"]
+    }
+  }
+}
+```
+
 If you omit `UNIQUE_PROFILE_DIR`, data is stored in `~/.unique-profile/`.
 
-### 3. Use it
+### 3. Verify it's working
+
+> **TL;DR** — Restart session → `/mcp` → ask a question only your profile can answer.
+
+- **Restart your session.** Exit Claude Code (`/quit` or Ctrl+C) and re-run `claude`. The MCP server spawns automatically on startup.
+
+- **Check MCP status.** Run `/mcp` inside Claude Code. You should see `unique-profile` listed as **connected** with 6 tools available.
+
+- **Troubleshooting** — if it shows disconnected or missing:
+  - Verify the `command` path in your settings is correct
+  - Confirm the venv has `mcp` installed (`pip install mcp`)
+  - Run the server manually to see errors:
+    ```bash
+    unique-profile
+    # or
+    /path/to/.venv/Scripts/python.exe -m unique_profile.server
+    ```
+
+- **Smoke test with real queries.** Try these — each one exercises a different MCP primitive:
+
+  > *"What languages do I speak?"*
+  > Tests **resource reading**. The LLM has no way to answer this without the profile. If it lists your languages, the server is injecting context correctly.
+
+  > *"Export my profile as JSON"*
+  > Tests the **`export_profile`** tool. Should return your full profile data.
+
+  > *"Search my memories for python"*
+  > Tests **`search_memories`**. Returns any memories matching the keyword.
+
+  > *"Add a memory that I prefer dark mode"*
+  > Tests **`add_memory`**. Should confirm a new entry with a `mem_` ID and timestamp.
+
+  > *"Confirm memory mem_XXXX"* (use a real ID from the search above)
+  > Tests **`confirm_memory`**. Changes confidence from `auto_inferred` to `user_confirmed`.
+
+  > *"Delete memory mem_XXXX"* (use a real ID)
+  > Tests **`delete_memory`**. Removes the entry and confirms deletion.
+
+  > *"Introduce yourself as if you know me"*
+  > Tests the **`introduce_yourself`** prompt. The LLM should generate a personalized greeting using your profile data.
+
+- **Success criteria:** If these queries return meaningful data from your profile, the full pipeline is working: client → stdio/JSON-RPC → server → `profile.json` → response.
+
+### 4. Use it
 
 Once connected, the LLM can:
 
@@ -113,8 +171,37 @@ Every memory tracks **provenance** — which model created it, when, and whether
 - `export_profile(fmt)` — Export as JSON or markdown
 
 ### Prompts
-- `introduce_yourself` — Generate a system prompt from the current profile
-- `summarize_session` — Summarize a conversation for saving as a memory
+
+#### `introduce_yourself`
+
+Generates a system prompt from the current profile state. Reads identity, preferences, knowledge, and recent memories, then concatenates them into a structured block that can be prepended to any conversation.
+
+**What it produces:**
+- Identity fields (name, profession, location, languages) — only included if non-empty
+- Communication preferences (style, depth, formality, humor)
+- Skills and interests as comma-separated lists
+- Ongoing projects as bullet points
+- Last 5 memories with date prefix and truncated content (150 chars)
+
+**Known limitations:**
+- No token budget awareness — output grows with profile size
+- No priority weighting between confirmed and auto-inferred memories
+- Flat rendering — no grouping or summarization of related items
+
+#### `summarize_session`
+
+Returns an instruction prompt that asks the LLM to summarize the current conversation for storage as a memory. Accepts an optional `conversation_notes` parameter.
+
+**Focus areas requested:**
+- New facts learned about the user
+- Decisions made or preferences expressed
+- Project progress or status updates
+- Action items or next steps
+
+**Known limitations:**
+- No schema enforcement on output — relies on the LLM to produce bullet points
+- No integration with `add_memory` — the caller must save the summary separately
+- No deduplication — doesn't check for existing similar memories before saving
 
 ## Data Storage
 
