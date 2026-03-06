@@ -10,94 +10,13 @@ AI memory is **vendor-locked**.
 - ChatGPT's memory stays in ChatGPT
 - Grok's memory stays in Grok
 
-Switch models and you **start from zero**.  
+Switch models and you **start from zero**.
 
 __Unique Profile__ stores your AI profile in a file you own.
 
-__Any__ ```MCP-compatible client``` can read and update it.
+__Any__ `MCP-compatible client` can read and update it.
 
 Your context can follow you across models and tools.
-
-
-
-![MCP first run demo showing the introduce_yourself prompt in Claude Code](docs/mcp-first-run.png)
-
----
-
-
-
-
----
-
-## Quick Start
-
-```bash
-git clone https://github.com/SteelCityAvatar/unique-profile.git
-cd unique-profile
-pip install -e .
-```
-
-Add the server to your MCP client config (e.g. `~/.claude/settings.json`):
-
-```json
-{
-  "mcpServers": {
-    "unique-profile": {
-      "command": "unique-profile"
-    }
-  }
-}
-```
-
-Restart your session. Run `/mcp` to confirm the server is connected, then try:
-
-> *"Introduce yourself as if you know me"*
-
-The LLM should respond using data from your profile. If it does, the full pipeline is working.
-
-<details>
-<summary><strong>Alternative config: run from venv directly</strong></summary>
-
-If the `unique-profile` console script isn't on your PATH:
-
-```json
-{
-  "mcpServers": {
-    "unique-profile": {
-      "command": "/path/to/unique-profile/.venv/Scripts/python.exe",
-      "args": ["-m", "unique_profile.server"]
-    }
-  }
-}
-```
-
-Set `UNIQUE_PROFILE_DIR` env var to customize where data is stored (default: `~/.unique-profile/`).
-
-</details>
-
-<details>
-<summary><strong>Troubleshooting</strong></summary>
-
-- Run `/mcp` in Claude Code — you should see `unique-profile` listed as **connected** with 6 tools
-- If disconnected: verify the `command` path and that `mcp` is installed (`pip install mcp`)
-- Test manually: `unique-profile` or `python -m unique_profile.server`
-
-</details>
-
----
-
-## Profile Schema
-
-| Section | Contents |
-|---------|----------|
-| **Identity** | Name, background, profession, location, languages |
-| **Preferences** | Communication style, explanation depth, formality, humor |
-| **Knowledge** | Skills, interests, ongoing projects |
-| **Memories** | Timestamped entries with tags, source model, and confidence level |
-
-Every memory tracks provenance — which model created it, when, and whether the user has confirmed it.
-
-See [`examples/profile.json`](examples/profile.json) for the full schema.
 
 ---
 
@@ -141,6 +60,80 @@ graph LR
 ```
 
 The server runs as a subprocess spawned by the MCP client, communicating over stdio (JSON-RPC). All clients read from and write to the same local JSON file. Concurrent access is handled with OS-level file locking (`fcntl` on Unix, `msvcrt` on Windows) and exponential backoff.
+
+---
+
+## Profile Schema
+
+| Section | Contents |
+|---------|----------|
+| **Identity** | Name, background, profession, location, languages |
+| **Preferences** | Communication style, explanation depth, formality, humor |
+| **Knowledge** | Skills, interests, ongoing projects |
+| **Memories** | Timestamped entries with tags, source model, and confidence level |
+
+Every memory tracks provenance — which model created it, when, and whether the user has confirmed it.
+
+See [`examples/profile.json`](examples/profile.json) for the full schema.
+
+---
+
+## Quick Start
+
+```bash
+git clone https://github.com/SteelCityAvatar/unique-profile.git
+cd unique-profile
+pip install -e .
+```
+
+Add the server to your MCP client config (e.g. `~/.claude/settings.json`):
+
+```json
+{
+  "mcpServers": {
+    "unique-profile": {
+      "command": "unique-profile"
+    }
+  }
+}
+```
+
+Restart your session. Run `/mcp` to confirm the server is connected, then try:
+
+> *"Introduce yourself as if you know me"*
+
+The LLM should respond using data from your profile. If it does, the full pipeline is working.
+
+![MCP first run demo showing the introduce_yourself prompt in Claude Code](docs/mcp-first-run.png)
+
+<details>
+<summary><strong>Alternative config: run from venv directly</strong></summary>
+
+If the `unique-profile` console script isn't on your PATH:
+
+```json
+{
+  "mcpServers": {
+    "unique-profile": {
+      "command": "/path/to/unique-profile/.venv/Scripts/python.exe",
+      "args": ["-m", "unique_profile.server"]
+    }
+  }
+}
+```
+
+Set `UNIQUE_PROFILE_DIR` env var to customize where data is stored (default: `~/.unique-profile/`).
+
+</details>
+
+<details>
+<summary><strong>Troubleshooting</strong></summary>
+
+- Run `/mcp` in Claude Code — you should see `unique-profile` listed as **connected** with 6 tools
+- If disconnected: verify the `command` path and that `mcp` is installed (`pip install mcp`)
+- Test manually: `unique-profile` or `python -m unique_profile.server`
+
+</details>
 
 ---
 
