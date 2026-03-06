@@ -4,27 +4,28 @@ One profile. Any model. Your machine.
 
 A self-hostable MCP server that gives any LLM access to your personal profile — identity, preferences, knowledge context, and memories — from a single local JSON file.
 
-![MCP first run demo showing the introduce_yourself prompt in Claude Code](docs/mcp-first-run.png)
-
----
-
-
-### Problem
 AI memory is **vendor-locked**.
 
 - Claude's memory stays in Claude
 - ChatGPT's memory stays in ChatGPT
 - Grok's memory stays in Grok
 
-Switch models and you **start from zero**.
+Switch models and you **start from zero**.  
 
-### Solution
+__Unique Profile__ stores your AI profile in a file you own.
 
-Unique Profile stores your AI profile in a file you own.
-
-Any MCP-compatible client can read and update it.
+__Any__ ```MCP-compatible client``` can read and update it.
 
 Your context can follow you across models and tools.
+
+
+
+![MCP first run demo showing the introduce_yourself prompt in Claude Code](docs/mcp-first-run.png)
+
+---
+
+
+
 
 ---
 
