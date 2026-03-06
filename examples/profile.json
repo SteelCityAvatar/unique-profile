@@ -1,0 +1,110 @@
+{
+  "identity": {
+    "name": "John Doe",
+    "background": "Experienced full-stack developer with a healthcare informatics focus. Strong preference for clean architecture and test-driven development. Uses AI regularly for prototyping, code review, and technical research.",
+    "profession": "Senior Software Engineer / Backend Systems (healthcare platforms)",
+    "location": "United States (Eastern Time)",
+    "languages": ["English", "Spanish"]
+  },
+  "preferences": {
+    "communication_style": "direct",
+    "explanation_depth": "advanced",
+    "humor": true,
+    "formality": "casual"
+  },
+  "knowledge_context": {
+    "ongoing_projects": [
+      {
+        "name": "Unique Profile (portable AI user profile via MCP)",
+        "notes": "Building a user-owned profile/memory layer that can be injected into any LLM session. Focus: portability, safety (confirmed memories), and practical integration."
+      },
+      {
+        "name": "Patient data pipeline modernization",
+        "notes": "Migrating legacy ETL jobs to event-driven architecture; emphasis on HIPAA compliance and data lineage tracking."
+      },
+      {
+        "name": "Home workshop CNC setup",
+        "notes": "Configuring a benchtop CNC router for precision woodworking, dialing in feed rates and toolpath optimization."
+      },
+      {
+        "name": "Python tooling & deployment workflows",
+        "notes": "Regular work with Python APIs/services, containers, and CI/CD patterns; prefers minimal, maintainable solutions over heavy abstractions."
+      }
+    ],
+    "skills": [
+      "Python (daily use)",
+      "REST API design",
+      "Healthcare data standards (HL7, FHIR)",
+      "Cloud infrastructure (AWS, Terraform)",
+      "Data pipelines & analytics engineering",
+      "Git workflows (branching/merging/PR hygiene)",
+      "Debugging production issues"
+    ],
+    "interests": [
+      "LLM tooling (MCP, agents, context injection)",
+      "System design and clean abstractions",
+      "Woodworking and CNC fabrication",
+      "Open-source contributions",
+      "Personal finance and long-term planning",
+      "Trail running and outdoor recreation"
+    ]
+  },
+  "memories": [
+    {
+      "id": "mem_0a1b2c3d",
+      "content": "Prefers answers that are direct and practical; dislikes over-engineered solutions unless explicitly requested.",
+      "tags": ["preference", "communication"],
+      "source_model": "user_confirmed",
+      "timestamp": "2026-03-01T18:10:00+00:00",
+      "confidence": "user_confirmed"
+    },
+    {
+      "id": "mem_1b2c3d4e",
+      "content": "Codes in Python daily and typically wants minimal working code first, then optional improvements.",
+      "tags": ["preference", "python"],
+      "source_model": "user_confirmed",
+      "timestamp": "2026-03-01T18:12:00+00:00",
+      "confidence": "user_confirmed"
+    },
+    {
+      "id": "mem_2c3d4e5f",
+      "content": "Often uses AI as a tutor: wants step-by-step reasoning for learning topics, and prefers not to receive final answers to homework-style problems.",
+      "tags": ["preference", "learning"],
+      "source_model": "user_confirmed",
+      "timestamp": "2026-03-01T18:15:00+00:00",
+      "confidence": "user_confirmed"
+    },
+    {
+      "id": "mem_3d4e5f6a",
+      "content": "Strong interest in portable personalization across LLMs: wants a user-owned identity/preferences layer that can be reused across vendors and models.",
+      "tags": ["project", "llm", "mcp"],
+      "source_model": "unique-profile",
+      "timestamp": "2026-03-04T20:05:00+00:00",
+      "confidence": "auto_inferred"
+    },
+    {
+      "id": "mem_4e5f6a7b",
+      "content": "Values precision and correctness over 'nice' phrasing; prefers explicit assumptions when the problem is ambiguous.",
+      "tags": ["preference", "communication"],
+      "source_model": "user_confirmed",
+      "timestamp": "2026-03-01T18:20:00+00:00",
+      "confidence": "user_confirmed"
+    },
+    {
+      "id": "mem_5f6a7b8c",
+      "content": "Maintains a home workshop with CNC equipment and frequently optimizes toolpaths and material settings.",
+      "tags": ["interest", "woodworking", "cnc"],
+      "source_model": "auto_inferred",
+      "timestamp": "2026-02-15T03:30:00+00:00",
+      "confidence": "auto_inferred"
+    },
+    {
+      "id": "mem_6a7b8c9d",
+      "content": "Background includes healthcare informatics; often discusses data pipelines, compliance requirements, and system integration patterns.",
+      "tags": ["knowledge", "healthcare", "engineering"],
+      "source_model": "auto_inferred",
+      "timestamp": "2026-02-20T16:45:00+00:00",
+      "confidence": "auto_inferred"
+    }
+  ]
+}
