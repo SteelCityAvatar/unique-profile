@@ -13,7 +13,7 @@ from unique_profile.profile import ProfileStore
 _profile_dir = os.environ.get("UNIQUE_PROFILE_DIR")
 store = ProfileStore(profile_dir=_profile_dir)
 
-mcp = FastMCP("Unique Profile")
+mcp = FastMCP("me")
 
 # =============================================================================
 # Resources — injected into the LLM's context at conversation start
