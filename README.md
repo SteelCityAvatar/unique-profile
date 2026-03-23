@@ -91,7 +91,7 @@ Add the server to your MCP client config (e.g. `~/.claude/settings.json`):
 ```json
 {
   "mcpServers": {
-    "unique-profile": {
+    "me": {
       "command": "unique-profile"
     }
   }
@@ -114,7 +114,7 @@ If the `unique-profile` console script isn't on your PATH:
 ```json
 {
   "mcpServers": {
-    "unique-profile": {
+    "me": {
       "command": "/path/to/unique-profile/.venv/Scripts/python.exe",
       "args": ["-m", "unique_profile.server"]
     }
@@ -129,7 +129,7 @@ Set `UNIQUE_PROFILE_DIR` env var to customize where data is stored (default: `~/
 <details>
 <summary><strong>Troubleshooting</strong></summary>
 
-- Run `/mcp` in Claude Code — you should see `unique-profile` listed as **connected** with 6 tools
+- Run `/mcp` in Claude Code — you should see `me` listed as **connected** with 6 tools
 - If disconnected: verify the `command` path and that `mcp` is installed (`pip install mcp`)
 - Test manually: `unique-profile` or `python -m unique_profile.server`
 

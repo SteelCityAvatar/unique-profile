@@ -78,6 +78,30 @@ Chronological record of prompts given during development and what they produced.
 
 - Created `tests/TEST_SUMMARY.md` with descriptions of all 33 tests, no PII
 
+## Session 4 (2026-03-23) — Chrome Extension + HTTP Companion
+
+> Scope and build a Chrome extension to push the unique profile to AI chat platforms.
+
+**Architecture decisions made:**
+- Monorepo: extension lives alongside the MCP server (see Decision 007)
+- Local HTTP server over Native Messaging or manual import (see Decision 008)
+- HTTP server integrated into the existing package as `http_server.py` (see Decision 009)
+- Port 27182, CORS via regex for `chrome-extension://*` (see Decisions 010–011)
+- Feature branch: `feature/chrome-extension` off `master`
+
+**PII guardrail:** Added `profile.json` / `!examples/profile.json` to `.gitignore` to block accidental commit of real profile data anywhere in the repo tree.
+
+**Files added this session:**
+- `src/unique_profile/http_server.py` — FastAPI wrapper around `ProfileStore`; endpoints: `GET /profile`, `GET /profile/export`, `POST /profile/memories`, `DELETE /profile/memories/{id}`, `GET /health`
+- `pyproject.toml` — added `fastapi`, `uvicorn[standard]` deps; new `unique-profile-serve` console script
+- `extension/manifest.json` — MV3 manifest; host permissions for localhost + AI chat platforms
+- `extension/background.js` — service worker; fetches and caches profile, message hub for content scripts
+- `extension/popup/popup.html` + `popup.js` — status UI with per-platform sync controls
+- `extension/content-scripts/claude.js` — injects profile into claude.ai Projects custom instructions
+- `extension/content-scripts/chatgpt.js` — injects profile into ChatGPT custom instructions
+- `extension/content-scripts/gemini.js` — injects profile into Gemini personalization settings
+- `docs/chrome-extension.md` — architecture and usage guide for the extension + HTTP server
+
 ---
 
 # Part 2: MCP Prompt Template Versions

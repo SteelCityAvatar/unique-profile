@@ -63,6 +63,67 @@ See `docs/file-locking-design.md` for the full analysis of alternatives.
 
 ---
 
+## 007 — Monorepo: Chrome extension lives in the same repo as the MCP server (2026-03-23)
+
+**Context:** Needed to decide whether the Chrome extension and its companion HTTP service should live in a separate repo.
+
+**Decision:** Single monorepo. Extension code in `extension/`, HTTP server in `src/unique_profile/http_server.py`.
+
+**Rationale:**
+- The extension and MCP server share the same profile schema and `ProfileStore` — one source of truth
+- Single developer, personal project: two repos would mean two places to update when the schema changes
+- No meaningful difference in deployment complexity for a local tool
+
+---
+
+## 008 — HTTP companion service over Native Messaging or manual file import (2026-03-23)
+
+**Context:** Chrome extensions cannot access the local filesystem directly. Three options considered: (A) local HTTP server, (B) Chrome Native Messaging, (C) manual drag-and-drop import.
+
+**Decision:** Local HTTP server on `localhost:27182`.
+
+**Rationale:**
+- Native Messaging requires a registry entry (Windows) or manifest file (Mac/Linux) plus a packaged binary — significant setup friction
+- Manual import breaks the "sync happens automatically" goal
+- A FastAPI server is three dozen lines and reuses `ProfileStore` directly; users already have Python installed to run the MCP server
+
+**Trade-off:** Requires running a second process (`unique-profile-serve`) alongside the MCP server. Acceptable for v0.1.
+
+---
+
+## 009 — HTTP server integrated into the existing package, not a separate service (2026-03-23)
+
+**Context:** Could have built the HTTP companion as a standalone script or separate package.
+
+**Decision:** `src/unique_profile/http_server.py` — imports `ProfileStore` directly, registered as a new console script (`unique-profile-serve`) in `pyproject.toml`.
+
+**Rationale:**
+- Zero code duplication: all read/write/locking logic stays in `ProfileStore`
+- One `pip install` covers both `unique-profile` (MCP) and `unique-profile-serve` (HTTP)
+- Consistent config: both servers respect `UNIQUE_PROFILE_DIR` env var
+
+---
+
+## 010 — Port 27182 as default HTTP port (2026-03-23)
+
+**Context:** Needed a default port for the local HTTP companion server that is unlikely to conflict with common dev tools.
+
+**Decision:** Port 27182 (the first five digits of *e*, 2.7182…).
+
+**Rationale:** Memorable, outside the common port ranges (3000, 5000, 8000, 8080, etc.), and unlikely to be used by anything else on a typical dev machine. Overridable via `UNIQUE_PROFILE_HTTP_PORT` env var.
+
+---
+
+## 011 — CORS: allow chrome-extension://* via regex (2026-03-23)
+
+**Context:** FastAPI's `CORSMiddleware` doesn't natively support wildcard scheme-based origins like `chrome-extension://*`.
+
+**Decision:** Use both `allow_origins` (for localhost) and `allow_origin_regex=r"chrome-extension://.*"` together.
+
+**Rationale:** The extension ID changes per installation (unpacked dev mode) and may differ across machines. A regex match on the scheme covers all cases without hardcoding a specific extension ID. The server is localhost-only so the CORS surface is already constrained.
+
+---
+
 ## 006 — Test strategy: real-world functional tests (2026-03-05)
 
 **Context:** Needed to validate the ProfileStore works correctly end-to-end.

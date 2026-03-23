@@ -10,3 +10,11 @@ build/
 profile_data/
 .vscode/
 docs/testjson.json
+
+# Local MCP config — contains machine-specific absolute paths
+.mcp.json
+
+# Real user profile data — lives at ~/.unique-profile/profile.json (outside this repo)
+# Block profile.json anywhere in the tree; examples/profile.json is a safe fictional placeholder
+profile.json
+!examples/profile.json
